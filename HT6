@@ -1,0 +1,33 @@
+# Решение задание 4! "Подсчитать общее количество лайков, которые получили 10 самых молодых пользователей"
+SELECT count(target_id)
+FROM likes WHERE user_id in 
+(SELECT * FROM (SELECT user_id FROM profiles ORDER BY birthday DESC LIMIT 10) AS total);
+
+# Задание 2 "Создать все необходимые внешние ключи и диаграмму отношений."
+https://prnt.sc/10lic3n
+
+# Задание 12 "Создать и заполнить таблицы лайков и постов".
+INSERT INTO posts 
+  SELECT 
+    id, 
+    FLOOR(1 + (RAND() * 100)), 
+    FLOOR(1 + (RAND() * 100)),
+    'any text',
+    'some text',
+    FLOOR(1 + (RAND() * 4)),
+    TRUE, 
+    FALSE, 
+    CURRENT_TIMESTAMP, 
+    CURRENT_TIMESTAMP 
+  FROM media;
+  
+  INSERT INTO likes 
+  SELECT 
+    id, 
+    FLOOR(1 + (RAND() * 100)), 
+    FLOOR(1 + (RAND() * 100)),
+    FLOOR(1 + (RAND() * 4)),
+    CURRENT_TIMESTAMP 
+  FROM messages;
+  
+  
