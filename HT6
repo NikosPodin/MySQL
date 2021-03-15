@@ -1,12 +1,4 @@
-# Решение задание 4! "Подсчитать общее количество лайков, которые получили 10 самых молодых пользователей"
-SELECT count(target_id)
-FROM likes WHERE user_id in 
-(SELECT * FROM (SELECT user_id FROM profiles ORDER BY birthday DESC LIMIT 10) AS total);
-
-# Задание 2 "Создать все необходимые внешние ключи и диаграмму отношений."
-https://prnt.sc/10lic3n
-
-# Задание 12 "Создать и заполнить таблицы лайков и постов".
+# Задание 1 "Создать и заполнить таблицы лайков и постов".
 INSERT INTO posts 
   SELECT 
     id, 
@@ -30,4 +22,24 @@ INSERT INTO posts
     CURRENT_TIMESTAMP 
   FROM messages;
   
-  
+  # Задание 2 "Создать все необходимые внешние ключи и диаграмму отношений."
+https://prnt.sc/10lic3n
+
+#Задание 3 "Определить кто больше поставил лайков (всего) - мужчины или женщины?"
+SELECT (SELECT gender FROM vk5.profiles WHERE user_id=likes.user_id) 
+AS `G`, count(*)  AS `count` 
+FROM likes GROUP BY `G` 
+ORDER BY `count` DESC LIMIT 1;
+
+
+# Решение задание 4! "Подсчитать общее количество лайков, которые получили 10 самых молодых пользователей"
+SELECT count(target_id)
+FROM likes WHERE user_id in 
+(SELECT * FROM (SELECT user_id FROM profiles ORDER BY birthday DESC LIMIT 10) AS total);
+
+#5. Найти 10 пользователей, которые проявляют наименьшую активность в использовании социальной сети. 
+SELECT  `last_name`, `first_name`, 
+/*(SELECT count(*) FROM media where media.user_id = users.id)*/ +
+(SELECT count(*) FROM messages WHERE messages.from_user_id = users.id) + 
+(SELECT count(*) FROM likes WHERE likes.user_id=users.id) AS activity
+FROM users ORDER BY activity LIMIT 10;
